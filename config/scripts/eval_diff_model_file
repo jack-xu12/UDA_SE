@@ -1,0 +1,24 @@
+#! /bash/sh
+declare -A model_step_dict
+model_step_dict['50_1']=4000
+# model_step_dict['50_2']=6750
+model_step_dict['80_5']=5500
+model_step_dict['80_6']=2000
+model_step_dict['80_7']=4000
+model_step_dict['100_4']=2000
+model_step_dict['100_9']=7750
+# model_step_dict['100_20']=750
+
+
+
+for key in $(echo ${!model_step_dict[*]})
+do
+  array=(`echo $key | tr '_' ' '` )
+  path="res/results_lr_3e-5_warmup_0.2_cosine_${array[0]}_10000_random_${array[1]}/save/model_steps_${model_step_dict[$key]}.pt"
+  # echo "${path}"
+  jq --arg PATH "$path" '.model_file=$PATH' config/eval.json > config/eval_1.json
+  cat config/eval_1.json | jq '.model_file'
+  echo '#################################################'
+  python main.py --cfg='config/eval_1.json' --model_cfg='config/bert_base.json'
+  echo '################################################'
+done

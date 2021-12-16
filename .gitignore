@@ -127,3 +127,17 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+# use for ignore data file
+.idea
+BERT_Base_Uncased
+data_utils/data/
+preprocessed_data
+res/
+*.zip
+*.csv
+*.txt
+
+
+
