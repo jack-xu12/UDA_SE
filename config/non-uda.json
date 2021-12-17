@@ -6,25 +6,25 @@
     "mode": "train_eval",
     "uda_mode": false,
 
-    "total_steps": 10000,
+    "total_steps": 20000,
     "max_seq_length": 128,
-    "train_batch_size": 32,
+    "train_batch_size": 16,
     "eval_batch_size": 16,
 
     "data_parallel": true,
     "need_prepro": false,
-    "sup_data_dir": "preprocessed_data/sosc_data/back/sosc_sup_train_last_9.csv",
-    "eval_data_dir": "preprocessed_data/sosc_data/back/sosc_sup_test_last_1.csv",
+    "sup_data_dir": "preprocessed_data/github_data/back_trans/githubr_sup_train_all.csv",
+    "eval_data_dir": "preprocessed_data/github_data/back_trans/githubr_sup_dev.csv",
 
     "model_file":null,
     "pretrain_file":"BERT_Base_Uncased/bert_model.ckpt",
     "vocab":"BERT_Base_Uncased/vocab.txt",
-    "task": "sosc",
+    "task": "github",
 
     "save_steps": 500,
-    "check_steps": 250,
-    "results_dir": "res/sosc/results_non",
-    "log_file": "sosc_sup_all.txt",
+    "check_steps": 500,
+    "results_dir": "res/github/results_non",
+    "log_file": "github_sup_all.txt",
 
     "is_position": false
 }

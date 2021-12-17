@@ -143,7 +143,7 @@ class Trainer(object):
                     max_acc, max_f1 = self._update_metrics(get_acc, model, logger, global_step,
                                          max_acc, max_f1)
 
-                if len(max_f1) == 2:
+                if len(max_f1) == 3:
 
                     log_str = f'{self.cfg.sup_data_dir}\n' \
                               f'max_acc: {max_acc}\n' \

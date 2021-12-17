@@ -1,13 +1,13 @@
 {
     "seed": 43,
-    "lr": 3e-5,
-    "warmup": 0.2,
+    "lr": 2e-5,
+    "warmup": 0.1,
     "warmup_schedule": "warmup_cosine",
     "do_lower_case": true,
     "mode": "train_eval",
     "uda_mode": true,
 
-    "total_steps": 10000,
+    "total_steps": 20000,
     "max_seq_length": 128,
     "train_batch_size": 8,
     "eval_batch_size": 16,
@@ -21,7 +21,7 @@
 
     "data_parallel": true,
     "need_prepro": false,
-    "sup_data_dir": "preprocessed_data/github_data/back_trans/60/github_sup_train_60_random_061818.csv",
+    "sup_data_dir": "preprocessed_data/github_data/back_trans/180/github_sup_train_180_random_062805.csv",
     "unsup_data_dir": "preprocessed_data/github_data/back_trans/githubr_unsup_all.csv",
     "eval_data_dir": "preprocessed_data/github_data/back_trans/githubr_sup_dev.csv",
 
@@ -32,8 +32,8 @@
 
 
     "save_steps": 500,
-    "check_steps": 250,
-    "results_dir": "res/github/results_lr_3e-5_warmup_0.2_cosine_60_10000_random_test",
+    "check_steps": 500,
+    "results_dir": "res/github/test",
     "log_file": "diff_sup_log.txt",
 
     "is_position": false

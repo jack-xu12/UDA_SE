@@ -83,8 +83,11 @@ class CsvDataset(Dataset):
             # supervised dataset
             if d_type == 'sup':
                 # input_ids, segment_ids(input_type_ids), input_mask, input_label
-                input_columns = ['input_ids', 'input_type_ids', 'input_mask', 'label_id']
-                # input_columns = ['input_ids', 'input_type_ids', 'input_mask', 'label_ids']
+                if 'git' in str(self.__class__).lower():
+                    # in the github_golden a little bug in rename
+                    input_columns = ['input_ids', 'input_type_ids', 'input_mask', 'label_id']
+                else:
+                    input_columns = ['input_ids', 'input_type_ids', 'input_mask', 'label_ids']
                 self.tensors = [torch.tensor(data[c].apply(lambda x: ast.literal_eval(x)), dtype=torch.long)    \
                                                                                 for c in input_columns[:-1]]
                 self.tensors.append(torch.tensor(data[input_columns[-1]], dtype=torch.long))
