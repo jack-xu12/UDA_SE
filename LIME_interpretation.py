@@ -10,10 +10,11 @@ from copy import deepcopy
 import torch.nn.functional as F
 import ast
 
-from c.attr import Lime, LimeBase
+from captum.attr import Lime, LimeBase
 from captum._utils.models.linear_model import SkLearnLinearRegression, SkLearnLasso
 from IPython.core.display import HTML, display
 import pandas as pd
+import csv
 
 ####### Inspect the model prediction with Lime #######
 class LIME_class():
@@ -42,7 +43,7 @@ class LIME_class():
         self.attrs = lasso_lime_base.attribute(
             self.input_ids,  # add batch dimension for Captum
             target=self.label_id.squeeze(),
-            n_samples=12000,
+            n_samples=40000,
             show_progress=True
         ).squeeze(0)
 
@@ -105,6 +106,11 @@ def show_text_attr(attrs, idx, token_file):
 
 
 
+def write_csv(path, writing_mode, data_row):
+
+    with open(path, writing_mode, encoding='utf-8') as f:
+        csv_write = csv.writer(f)
+        csv_write.writerow(data_row)
 
 
 
@@ -112,7 +118,7 @@ def show_text_attr(attrs, idx, token_file):
 def main(cfg, model_cfg):
 
 
-    selected_idxs = [88, 90, 188, 196]
+    # selected_idxs = [88, 90, 188, 196]
 
     # Load Configuration
     cfg = configuration.params.from_json(cfg)  # Train or Eval cfg
@@ -127,6 +133,7 @@ def main(cfg, model_cfg):
     model = models.Classifier(model_cfg, len(data.TaskDataset.labels))
 
     token_file = 'preprocessed_data/sosc_data/back/sosc_sup_test_last_1_tokens.csv'
+    out_csv = 'LIME_interpretation_html.csv'
     # load model from pretrain file
     model_file = cfg.model_file
     model.eval()
@@ -139,10 +146,14 @@ def main(cfg, model_cfg):
     iter_bar = tqdm(deepcopy(data_iter))
 
     html_strs = []
+    attr_strs = []
+
+    # write the head
+    write_csv(out_csv, writing_mode='w', data_row=['attr_strs', 'html_strs'])
 
     for idx, batch in enumerate(iter_bar):
-        if not idx in selected_idxs:
-            continue
+        # if not idx in selected_idxs:
+        #     continue
         _b = [t.to(device) for t in batch]
         input_ids, segment_ids, input_mask, label_id = _b
         _lime_interpret = LIME_class(model = model,
@@ -153,13 +164,19 @@ def main(cfg, model_cfg):
 
         attrs = _lime_interpret.attrs
         print('Attribution range:', attrs.min().item(), 'to', attrs.max().item())
+        _attrs = ','.join([str(a) for a in attrs.numpy().tolist()])
         html_str = show_text_attr(attrs, idx, token_file=token_file)
+
+        attr_strs.append(_attrs)
         html_strs.append(html_str)
 
+        write_csv(out_csv, writing_mode='a+', data_row=[_attrs, html_str])
 
 
-    data_dict = {"html_strs": html_strs}
-    pd.DataFrame(data_dict).to_csv('LIME_interpretation_html.csv', index=False, encoding='utf-8')
+
+
+    # data_dict = {"html_strs": html_strs}
+    # pd.DataFrame(data_dict).to_csv('LIME_interpretation_html.csv', index=False, encoding='utf-8')
 
 
 

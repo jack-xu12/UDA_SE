@@ -5,7 +5,7 @@
     "do_lower_case": true,
     "data_parallel": false,
     "need_prepro": false,
-    "model_file": "res/results_lr_3e-5_warmup_0.2_cosine_80_10000_random_5/save/model_steps_5500.pt",
+    "model_file": "res/sosc/results_non/save/model_steps_9000.pt",
     "eval_data_dir": "preprocessed_data/sosc_data/back/sosc_sup_test_last_1.csv",
     "vocab":"BERT_Base_Uncased/vocab.txt",
     "task": "sosc"
